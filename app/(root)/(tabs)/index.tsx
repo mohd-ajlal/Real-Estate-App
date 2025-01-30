@@ -45,10 +45,10 @@ export default function Index() {
           </TouchableOpacity>
         </View>
       </View>
-      </View>
-
       <FeaturedCard/>
       <Card/>
+      </View>
+
     </SafeAreaView>
   );
 }
