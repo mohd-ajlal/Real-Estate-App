@@ -1,10 +1,17 @@
-import { Account, Avatars, Client, OAuthProvider } from "react-native-appwrite";
+import { Account, Avatars, Client, Databases, OAuthProvider } from "react-native-appwrite";
 import * as Linking from "expo-linking";
 import { openAuthSessionAsync } from "expo-web-browser";
 export const config = {
   platform: "com.mohdajlal.realestate",
   endpoint: process.env.EXPO_PUBLIC_APPWRITE_ENDPOINT,
   project: process.env.EXPO_PUBLIC_APPWRITE_PROJECT_ID,
+  databaseId: process.env.EXPO_PUBLIC_APPWRITE_DATABASE_ID,
+  galleriesCollectionId:
+    process.env.EXPO_PUBLIC_APPWRITE_GALLERIES_COLLECTION_ID,
+  reviewsCollectionId: process.env.EXPO_PUBLIC_APPWRITE_REVIEWS_COLLECTION_ID,
+  agentsCollectionId: process.env.EXPO_PUBLIC_APPWRITE_AGENTS_COLLECTION_ID,
+  propertiesCollectionId:
+    process.env.EXPO_PUBLIC_APPWRITE_PROPERTIES_COLLECTION_ID,
 };
 
 export const client = new Client();
@@ -17,6 +24,8 @@ client
 export const avatar = new Avatars(client);
 
 export const account = new Account(client);
+
+export const databases = new Databases(client);
 
 export async function login() {
   try {
@@ -37,23 +46,23 @@ export async function login() {
     );
 
     if (browserResult.type != "success") {
-        throw new Error("Failed to login");
+      throw new Error("Failed to login");
     }
 
-    const url = new URL(browserResult.url)
+    const url = new URL(browserResult.url);
 
-    const secret = url.searchParams.get("secret")?.toString()
+    const secret = url.searchParams.get("secret")?.toString();
 
-    const userId = url.searchParams.get("userId")?.toString()
+    const userId = url.searchParams.get("userId")?.toString();
 
-    if(!secret || !userId){
-      throw new Error("Failed to login")
+    if (!secret || !userId) {
+      throw new Error("Failed to login");
     }
 
-    const session = await account.createSession(userId, secret)
+    const session = await account.createSession(userId, secret);
 
-    if(!session){
-      throw new Error("Failed to create a session")
+    if (!session) {
+      throw new Error("Failed to create a session");
     }
 
     return true;
@@ -62,7 +71,6 @@ export async function login() {
     return false;
   }
 }
-
 
 export async function logout() {
   try {
@@ -74,17 +82,16 @@ export async function logout() {
   }
 }
 
-
 export async function getCurrentUser() {
   try {
     const user = await account.get();
 
     if (user.$id) {
-        const userAvatar = avatar.getInitials(user.name)
-        return {
-            ...user,
-            avatar: userAvatar.toString()
-        };
+      const userAvatar = avatar.getInitials(user.name);
+      return {
+        ...user,
+        avatar: userAvatar.toString(),
+      };
     }
   } catch (error) {
     console.log(error);

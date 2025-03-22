@@ -4,8 +4,9 @@ import Search from "@/components/Search";
 import icons from "@/constants/icons";
 import images from "@/constants/images";
 import { useGlobalContext } from "@/lib/global-provider";
+// import seed from "@/lib/seed";
 import { Link } from "expo-router";
-import { FlatList, Image, SafeAreaView, Text, TouchableOpacity, View } from "react-native";
+import { Button, FlatList, Image, SafeAreaView, Text, TouchableOpacity, View } from "react-native";
 
 export default function Index() {
   // Function to get current time in HH:MM format
@@ -29,6 +30,7 @@ export default function Index() {
 
   return (
     <SafeAreaView className="bg-white h-full">
+      {/* <Button title="Seed" onPress={seed}/> */}
       <FlatList
         data={[1,2,3,4]}
         renderItem={({item})=><Card/>}
